@@ -1,7 +1,22 @@
 {
-	"name": "login",
+	"name": "nthu-auto-login-and-acixstore-getter",
 	"version": "1.0.0",
 	"description": "NTHU login system",
+	"keywords": [
+		"login",
+		"nthu",
+		"acixstore",
+		"auto",
+		"auto-login"
+	],
+	"homepage": "https://github.com/edge-runner913/NTHU-auto-login-ACIXSTORE-getter#readme",
+	"bugs": {
+		"url": "https://github.com/edge-runner913/NTHU-auto-login-ACIXSTORE-getter/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/edge-runner913/NTHU-auto-login-ACIXSTORE-getter.git"
+	},
 	"license": "ISC",
 	"author": "edge-runner913",
 	"type": "module",

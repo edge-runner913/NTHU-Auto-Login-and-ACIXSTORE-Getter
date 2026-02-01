@@ -1,4 +1,4 @@
-# ~~中~~清華大學校務系統 - 自動登入 & 獲取ACIXSTORE -  NTHU auto login & ACIXSTORE getter
+# ~~中~~清華大學校務系統 自動登入 & 獲取ACIXSTORE - NTHU auto login & ACIXSTORE getter
 
 ## 前置要求
 
@@ -10,7 +10,7 @@
 
 ### Python
 
-需要安裝[uv (python 套件管理工具)](https://docs.astral.sh/uv/) 。
+需要安裝[uv (python 套件管理工具)](https://docs.astral.sh/uv/)，請依uv網站指示安裝。
 
 `uv`創建的虛擬環境自帶Python 3.10，因此也**不需要安裝Python**。
 
