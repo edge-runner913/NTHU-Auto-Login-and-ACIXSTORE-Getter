@@ -128,6 +128,9 @@ export async function NTHU_login(account: string, password: string): Promise<str
 		if (hint !== account) {
 			console.warn('帳號與回傳值不符，可能登入失敗。');
 		}
+
+		// 初始化 Session (其實我不知道是個什麼原理)
+		await axios.get(`https://www.ccxp.nthu.edu.tw/ccxp/INQUIRE/select_entry.php?ACIXSTORE=${ACIXSTORE}&hint=${hint}`)
 		return ACIXSTORE;
 	} catch (err) {
 		console.error('錯誤：' + err);
