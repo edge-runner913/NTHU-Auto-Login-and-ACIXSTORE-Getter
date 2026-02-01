@@ -7,13 +7,6 @@ import 'dotenv/config';
 import { captcha, imagePath } from "./captcha.js";
 import { pyOCR } from './pyOCR.js';
 
-// ================ 手動設定區域 =================
-
-const account: string = '你的帳號';
-const password: string = '你的密碼';
-
-// ==============================================
-
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export async function NTHU_login(account: string, password: string): Promise<string | void> {
@@ -146,5 +139,3 @@ function extract(input: string, ...params: Array<string>): Record<string, string
 	}
 	return result;
 }
-
-await NTHU_login(account, password);

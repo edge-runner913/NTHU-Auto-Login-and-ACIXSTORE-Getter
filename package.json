@@ -22,9 +22,10 @@
 	"type": "module",
 	"main": "NTHU_login.js",
 	"scripts": {
-		"start": "ts-node NTHU_login.ts",
+		"start": "ts-node main.ts",
 		"build": "tsc",
-		"watch": "tsc -w"
+		"watch": "tsc -w",
+		"prepare": "npm run build"
 	},
 	"dependencies": {
 		"axios": "^1.13.4",
