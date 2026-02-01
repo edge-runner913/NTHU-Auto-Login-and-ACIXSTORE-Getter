@@ -10,21 +10,30 @@
 
 ### Python
 
-`uv`創建的虛擬環境已自帶Python。
+需要安裝[uv (python 套件管理工具)](https://docs.astral.sh/uv/) 。
 
-`./Dddd/requirements.txt`內有依賴項類表。
+`uv`創建的虛擬環境自帶Python 3.10，因此也**不需要安裝Python**。
 
-因為Python的套件管理太她媽難用，所以我直接上傳了。
+檔案較大，請耐心等待。
 
 ## 使用說明
 
 >[!NOTE]
-> 可以在main.ts中，輸入你的帳號與密碼
+> 可以在main.ts中，將`你的帳號`與`你的密碼`分別替換成你的帳號與密碼，如下所示：
 >
 >```typescript
 >const account: string = '你的帳號';
 >const password: string = '你的密碼';
 >```
+>
+>或將`.env.example`改名為`.env`檔案放在專案根目錄，內容如下：
+>
+>```env
+>ACCOUNT=你的帳號
+>PASSWORD=你的密碼
+>```
+>
+> 或是執行時不提供，會要求輸入。
 
 開啟命令提示字元或終端機，`cd`進入專案資料夾後
 
@@ -44,7 +53,7 @@
 
 ## 運行結果
 
-NTHU_login函式會回傳ACIXSTORE值。格視為字串。
+NTHU_login函式會回傳ACIXSTORE值。格式為字串。
 
 ## 注意事項
 
