@@ -2,6 +2,7 @@ import axios from "axios";
 import FormData from "form-data";
 import inquirer from "inquirer";
 import sharp from "sharp";
+import 'dotenv/config';
 
 import { captcha, imagePath } from "./captcha.js";
 import { pyOCR } from './pyOCR.js';
@@ -16,52 +17,37 @@ const password: string = '你的密碼';
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export async function NTHU_login(account: string, password: string): Promise<string | void> {
-	// 取得驗證碼ID (fnstr)
+	// 取得驗證碼ID與圖片 (fnstr)
 	const fnstr: string = await captcha()
 		.catch((err) => {
 			throw new Error('取得驗證碼失敗：' + err);
 		});
 
-	const passwd2: number = await (async (): Promise<number> => {
-		try {
-			console.info('正在調用 Dddd.py 識別驗證碼...');
-			const num = parseInt(await pyOCR(imagePath), 10);
-			if (num > 999999) throw new Error('超出六位數範圍');
-			console.log('識別結果:', num.toString().padStart(6, '0'));
-			return num;
-		} catch (err) {
-			console.error(`使用 Dddd.py 識別失敗：${err}，請手動輸入驗證碼。`);
-
-			const imagePrompt = await sharp(imagePath)
-				.grayscale()      // 轉灰度
-				.threshold(150)   // 二值化，過濾掉淺色的背景干擾
-				.toFile(imagePath + '_1.png')
-				.then(() => `處理後的 ${imagePath + '_1.png'} 或 ${imagePath}`)
-				.catch((err) => {
-					console.error('處理驗證碼圖片失敗：' + err);
-					return imagePath;
-				});
-
-			const { num_1 } = await inquirer.prompt([{
-				type: "number",
-				name: 'num_1',
-				message:
-					`請手動查看 ${imagePrompt} \n` +
-					`並輸入六位數驗證碼:`,
-				validate: (input: number) => (
-					typeof input === 'number' && !isNaN(input) &&
-					0 <= input && input <= 999999) ||
-					'請輸入有效的六位數驗證碼'
-			}]);
-			return num_1;
-		}
-	})();
+	console.info('將嘗試調用 Dddd.py 識別驗證碼...');
+	const getPw2: Promise<number | Error> = (async () => {
+		const num = parseInt(await pyOCR(imagePath), 10);
+		if (num > 999999) throw new Error('超出六位數範圍'); // TODO: 更嚴謹的驗證
+		return num;
+	})().catch(async () => { // Dddd.py 識別失敗，改用 sharp 處理圖片
+		const imagePrompt = await sharp(imagePath)
+			.grayscale()      // 轉灰度
+			.threshold(150)   // 二值化，過濾掉淺色的背景干擾
+			.toFile(imagePath + '_1.png')
+			.then(() => `處理後的 ${imagePath + '_1.png'} 或 ${imagePath}`)
+			.catch((err) => {
+				// console.error('處理驗證碼圖片失敗：' + err);
+				return imagePath;
+			});
+		return new Error(imagePrompt);
+	});
 
 	// ======== 帳號 & 密碼 ========
-	if (account === '' || account === "你的帳號" ||
-		password === '' || password === "你的密碼") {
+	const getAP = async () => {
+		if (process.env.ACCOUNT && process.env.PASSWORD) {
+			return [process.env.ACCOUNT, process.env.PASSWORD];
+		}
 		console.warn('未設定帳號和密碼，請先輸入：');
-		({ account, password } = await inquirer.prompt([
+		const { account, password } = await inquirer.prompt([
 			{
 				type: "input",
 				name: "account",
@@ -72,7 +58,36 @@ export async function NTHU_login(account: string, password: string): Promise<str
 				name: "password",
 				message: "請輸入密碼：",
 			}
-		]));
+		]);
+		return [account, password];
+	}
+
+	if (account === '' || account === "你的帳號" ||
+		password === '' || password === "你的密碼")
+		[account, password] = await getAP();
+
+	// ======== 取得驗證碼 ========
+	let passwd2: number;
+	let result: number | Error = await getPw2;
+	if (result instanceof Error) {
+		const imagePrompt = result.message;
+		console.error(`使用 Dddd.py 識別失敗，請手動輸入驗證碼。`);
+
+		const { num_1 } = await inquirer.prompt([{
+			type: "number",
+			name: 'num_1',
+			message:
+				`請手動查看 ${imagePrompt} \n` +
+				`並輸入六位數驗證碼:`,
+			validate: (input) => (
+				typeof input === 'number' && !isNaN(input) &&
+				0 <= input && input <= 999999) ||
+				'請輸入有效的六位數驗證碼'
+		}]);
+		passwd2 = num_1;
+	} else {
+		console.log('識別結果:', result.toString().padStart(6, '0'));
+		passwd2 = result;
 	}
 
 	// ======== 發送登入請求 ========
