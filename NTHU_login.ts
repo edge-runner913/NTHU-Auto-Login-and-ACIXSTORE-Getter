@@ -10,7 +10,7 @@ import { pyOCR } from './pyOCR.js';
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-export async function NTHU_login(account: string, password: string): Promise<string | void> {
+export async function NTHU_login(account: string, password: string): Promise<string> {
 	// 取得驗證碼ID與圖片 (fnstr)
 	const fnstr: string = await captcha()
 		.catch((err) => {
@@ -128,6 +128,7 @@ export async function NTHU_login(account: string, password: string): Promise<str
 		return ACIXSTORE;
 	} catch (err) {
 		console.error('錯誤：' + err);
+		throw err;
 	} finally { // 清理驗證碼圖片
 		await delay(1000); // 等待檔案操作結束
 		const captchaPictures = [imagePath, imagePath + '_1.png'];
