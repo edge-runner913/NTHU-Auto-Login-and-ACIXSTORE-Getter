@@ -2,6 +2,7 @@ import axios from "axios";
 import FormData from "form-data";
 import inquirer from "inquirer";
 import sharp from "sharp";
+import fs from "fs/promises";
 import 'dotenv/config';
 
 import { captcha, imagePath } from "./captcha.js";
@@ -70,7 +71,7 @@ export async function NTHU_login(account: string, password: string): Promise<str
 			type: "number",
 			name: 'num_1',
 			message:
-				`請手動查看 ${imagePrompt} \n` +
+				`請手動查看腳本路徑下的 ${imagePrompt} \n` +
 				`並輸入六位數驗證碼:`,
 			validate: (input) => (
 				typeof input === 'number' && !isNaN(input) &&
@@ -127,6 +128,15 @@ export async function NTHU_login(account: string, password: string): Promise<str
 		return ACIXSTORE;
 	} catch (err) {
 		console.error('錯誤：' + err);
+	} finally { // 清理驗證碼圖片
+		await delay(1000); // 等待檔案操作結束
+		const captchaPictures = [imagePath, imagePath + '_1.png'];
+		for (const file of captchaPictures)
+			fs.unlink(file).catch((err) => {
+				if (err.code === 'ENOENT')
+					return; // 檔案不存在，不處理
+				// 騙你的 就算存在也不處理
+			});
 	}
 }
 
