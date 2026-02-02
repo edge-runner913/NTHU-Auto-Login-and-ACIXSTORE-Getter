@@ -2,20 +2,24 @@ import { spawn } from 'child_process';
 import path from 'path';
 import fs from 'fs';
 import { spawnSync } from 'child_process';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // 調用 Dddd.py 識別驗證碼
 export function pyOCR(imagePath: string): Promise<string> {
 	return new Promise((resolve, reject) => {
-		const pythonPath = path.resolve('Dddd', '.venv', 'Scripts', 'python.exe');
-		const scriptPath = path.resolve('Dddd', 'ocr.py');
+		const pythonPath = path.resolve(__dirname, 'Dddd', '.venv', 'Scripts', 'python.exe');
+		const scriptPath = path.resolve(__dirname, 'Dddd', 'ocr.py');
 		const imgPath = path.resolve(imagePath);
 
-		if (!fs.existsSync(path.resolve('Dddd', '.venv'))) {
+		if (!fs.existsSync(path.resolve(__dirname, 'Dddd', '.venv'))) {
 			try {
 				console.info('正在以uv建立虛擬環境，請稍候...');
 				spawnSync('uv', ['--version'], { stdio: 'ignore' });
 				spawnSync('uv', ['sync'], {
-					cwd: path.resolve('Dddd'),
+					cwd: path.resolve(__dirname, 'Dddd'),
 					shell: true,
 					stdio: 'inherit'
 				});
@@ -36,6 +40,9 @@ export function pyOCR(imagePath: string): Promise<string> {
 		});
 		pythonProcess.stderr.on('data', (data) => {
 			error = data.toString();
+		});
+		pythonProcess.on('error', (err) => {
+			reject(`Dddd.py 執行失敗： ${err.message}`);
 		});
 
 		// when the process ends
