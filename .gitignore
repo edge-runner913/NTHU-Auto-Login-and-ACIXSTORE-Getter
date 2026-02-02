@@ -5,3 +5,4 @@ node_modules
 captcha*.png
 .venv
 *.js
+dist
