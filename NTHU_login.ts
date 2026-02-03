@@ -111,24 +111,41 @@ export async function NTHU_login(account: string, password: string): Promise<str
 			throw new Error('驗證碼錯誤！');
 		} else if (response.includes('alert(')) {
 			const err = response.match(/alert\('(.+)'\);/)?.[1] || '未知錯誤';
-			console.error(err);
+			console.error('錯誤：', err);
 			throw new Error(err);
 		} else if (!response.includes('ACIXSTORE')) {
 			throw new Error('回傳資料中缺少必要的ACIXSTORE。');
 		}
 
 		const { ACIXSTORE, hint } = extract(response, 'ACIXSTORE', 'hint');
-		console.info(`ACIXSTORE: ${ACIXSTORE}, hint: ${hint}`);
+
+		// 初始化 Session (其實我不知道是個什麼原理)
+		const temp = await axios.get(`https://www.ccxp.nthu.edu.tw/ccxp/INQUIRE/select_entry.php?ACIXSTORE=${ACIXSTORE}&hint=${hint}`,
+			{ responseType: 'arraybuffer' });
+		const finalResult = new TextDecoder('big5').decode(temp.data);
+
+		// 確保登入成功
+		if (finalResult.includes('Error account or password')) {
+			throw new Error('帳號或密碼錯誤。請檢察輸入是否正確。');
+		}
+		if (finalResult.includes("<script>alert(")) {
+			throw new Error( // 抓取 alert('內容') 的內容當錯誤訊息，[0]是完整字串。
+				finalResult.match(/alert\s*\(['"](.+?)['"]\)/)?.[1] ?? '未知錯誤'
+			);
+		}
+		if (!finalResult.includes('清華大學') && !finalResult.includes('校務資訊')) {
+			throw new Error('Session 初始化失敗：未獲得初始資料。'); // 還在思考這個是否必要
+		}
+
+
 		if (hint !== account) {
 			console.warn('帳號與回傳值不符，可能登入失敗。');
 		}
-
-		// 初始化 Session (其實我不知道是個什麼原理)
-		await axios.get(`https://www.ccxp.nthu.edu.tw/ccxp/INQUIRE/select_entry.php?ACIXSTORE=${ACIXSTORE}&hint=${hint}`)
+		console.info(`ACIXSTORE: ${ACIXSTORE}, hint: ${hint}`);
 		return ACIXSTORE;
-	} catch (err) {
-		console.error('錯誤：' + err);
-		throw err;
+		//} catch (err) {
+		//	console.error('錯誤：', err);
+		//	throw err;
 	} finally { // 清理驗證碼圖片
 		await delay(1000); // 等待檔案操作結束
 		const captchaPictures = [imagePath, imagePath + '_1.png'];

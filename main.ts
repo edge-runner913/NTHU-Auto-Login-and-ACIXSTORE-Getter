@@ -7,4 +7,7 @@ const password: string = '你的密碼';
 
 // ==============================================
 
-await NTHU_login(account, password);
+await NTHU_login(account, password).catch((err) => {
+	console.error('登入失敗：', err);
+	process.exit(1);
+});
