@@ -17,7 +17,7 @@ export async function NTHU_login(account: string, password: string): Promise<str
 			throw new Error('取得驗證碼失敗：' + err);
 		});
 
-	console.info('將嘗試調用 Dddd.py 識別驗證碼...');
+	//console.info('將嘗試調用 Dddd.py 識別驗證碼...');
 	const getPw2: Promise<number | Error> = (async () => {
 		const num = parseInt(await pyOCR(imagePath), 10);
 		if (num > 999999) throw new Error('超出六位數範圍'); // TODO: 更嚴謹的驗證
@@ -80,7 +80,7 @@ export async function NTHU_login(account: string, password: string): Promise<str
 		}]);
 		passwd2 = num_1;
 	} else {
-		console.log('識別結果:', result.toString().padStart(6, '0'));
+		//console.log('識別結果:', result.toString().padStart(6, '0'));
 		passwd2 = result;
 	}
 
@@ -99,7 +99,7 @@ export async function NTHU_login(account: string, password: string): Promise<str
 	};
 
 	try {
-		console.info(`正在嘗試登入...`);
+		//console.info(`正在嘗試登入...`);
 		const response: string | undefined = (await axios.post(url, payload, { headers }))?.data;
 
 		// 分析回傳結果
@@ -141,7 +141,7 @@ export async function NTHU_login(account: string, password: string): Promise<str
 		if (hint !== account) {
 			console.warn('帳號與回傳值不符，可能登入失敗。');
 		}
-		console.info(`ACIXSTORE: ${ACIXSTORE}, hint: ${hint}`);
+		//console.info(`ACIXSTORE: ${ACIXSTORE}, hint: ${hint}`);
 		return ACIXSTORE;
 		//} catch (err) {
 		//	console.error('錯誤：', err);

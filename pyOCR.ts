@@ -25,7 +25,7 @@ export function pyOCR(imagePath: string): Promise<string> {
 				});
 			} catch (e) {
 				console.error('錯誤：請先安裝 uv (https://docs.astral.sh/uv/)');
-				console.error("請輸入以下指令，安裝uv：\n" + `powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"`);
+				console.error("Windows可輸入以下指令，安裝uv：\n" + `powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"`);
 				process.exit(1);
 			}
 		}

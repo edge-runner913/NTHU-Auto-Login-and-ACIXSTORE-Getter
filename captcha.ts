@@ -30,7 +30,7 @@ export async function captcha(): Promise<string> {
 	});
 
 	fs.writeFileSync(imagePath, Buffer.from(imgResponse.data));
-	console.info(`驗證碼已儲存為 ${imagePath}`);
+	//console.info(`驗證碼已儲存為 ${imagePath}`);
 
 	return fnstr;
 }
