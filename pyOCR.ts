@@ -7,7 +7,11 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// 調用 Dddd.py 識別驗證碼
+/**調用 Dddd.py 識別驗證碼
+ * @param imagePath 驗證碼圖片路徑
+ * @returns 識別結果的字串
+ * @throws Error 執行失敗或識別失敗時丟出錯誤
+ */
 export function pyOCR(imagePath: string): Promise<string> {
 	return new Promise((resolve, reject) => {
 		const pythonPath = path.resolve(__dirname, 'Dddd', '.venv', 'Scripts', 'python.exe');

@@ -10,6 +10,11 @@ import { pyOCR } from './pyOCR.js';
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
+/** 利用帳號、密碼與驗證碼登入，獲取 ACIXSTORE
+ * @param account 帳號(學號)
+ * @param password 密碼
+ * @returns ACIXSTORE 字串
+ */
 export async function NTHU_login(account: string, password: string): Promise<string> {
 	// 取得驗證碼ID與圖片 (fnstr)
 	const fnstr: string = await captcha()
