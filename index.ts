@@ -1,2 +1,2 @@
-export * from "./NTHU_login.js";
-export * from "./pyOCR.js";
+export { NTHU_login } from "./NTHU_login.js";
+export { pyOCR } from "./pyOCR.js";

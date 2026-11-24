@@ -1,45 +1,45 @@
 {
-	"name": "nthu-auto-login-and-acixstore-getter",
-	"version": "1.0.0",
-	"description": "NTHU login system",
-	"keywords": [
-		"login",
-		"nthu",
-		"acixstore",
-		"auto",
-		"auto-login"
-	],
-	"homepage": "https://github.com/edge-runner913/NTHU-auto-login-ACIXSTORE-getter#readme",
-	"bugs": {
-		"url": "https://github.com/edge-runner913/NTHU-auto-login-ACIXSTORE-getter/issues"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/edge-runner913/NTHU-auto-login-ACIXSTORE-getter.git"
-	},
-	"license": "ISC",
-	"author": "edge-runner913",
-	"type": "module",
-	"main": "index.js",
-	"types": "./dist/index.d.ts",
-	"scripts": {
-		"start": "tsx main.ts",
-		"build": "tsc",
-		"watch": "tsc -w",
-		"prepublishOnly": "npm run build"
-	},
-	"dependencies": {
-		"axios": "^1.13.4",
-		"cheerio": "^1.2.0",
-		"dotenv": "^17.2.3",
-		"inquirer": "^12.7.0",
-		"sharp": "^0.34.5",
-		"tsx": "^4.21.0"
-	},
-	"devDependencies": {
-		"@types/inquirer": "^9.0.9",
-		"@types/node": "^25.1.0",
-		"ts-node": "^10.9.2",
-		"typescript": "^5.9.3"
-	}
+    "name": "nthu-auto-login-and-acixstore-getter",
+    "version": "9.9.9",
+    "description": "NTHU login system",
+    "keywords": [
+        "login",
+        "nthu",
+        "acixstore",
+        "auto",
+        "auto-login"
+    ],
+    "homepage": "https://github.com/edge-runner913/NTHU-auto-login-ACIXSTORE-getter#readme",
+    "bugs": {
+        "url": "https://github.com/edge-runner913/NTHU-auto-login-ACIXSTORE-getter/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/edge-runner913/NTHU-auto-login-ACIXSTORE-getter.git"
+    },
+    "license": "ISC",
+    "author": "edge-runner913",
+    "type": "module",
+    "main": "index.js",
+    "types": "./dist/index.d.ts",
+    "scripts": {
+        "start": "tsx main.ts",
+        "build": "tsc",
+        "watch": "tsc -w",
+        "prepublishOnly": "npm run build"
+    },
+    "dependencies": {
+        "axios": "^1.13.4",
+        "cheerio": "^1.2.0",
+        "dotenv": "^17.2.3",
+        "inquirer": "^12.7.0",
+        "sharp": "^0.35.5",
+        "tsx": "^4.21.0"
+    },
+    "devDependencies": {
+        "@types/inquirer": "^9.0.9",
+        "@types/node": "^25.1.0",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.9.3"
+    }
 }

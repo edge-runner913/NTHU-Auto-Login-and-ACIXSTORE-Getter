@@ -1,5 +1,14 @@
 # ~~中~~清華大學校務系統 自動登入 & 獲取ACIXSTORE - NTHU auto login & ACIXSTORE getter
 
+> [!CAUTION]
+> 由於網站改成Cloudflare驗證，無法自動登入了
+> 
+> 請自行登入後取得ACIXSTORE，或是取得Cloudflare驗證。
+> 
+> 本儲存庫封存
+
+---
+
 ## 前置要求
 
 ### TypeScript
